@@ -4,89 +4,38 @@
     justify-center
     align-center
   >
-    <v-flex
-      xs12
-      sm8
-      md6
-    >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
+    <v-row justify="center">
+      <v-col
+        xs="12"
+        sm="8"
+        md="1"
+      >
+        назад
+      </v-col>
+      <v-col
+        xs="12"
+        sm="8"
+        md="6"
+      >
+        {{ mock }}
+      </v-col>
+      <v-col
+        xs="12"
+        sm="8"
+        md="1"
+      >
+        вперед
+      </v-col>
+    </v-row>
   </v-layout>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
+  data () {
+    return {
+      mock: 'Дорогой дневник, начну тебя вести с сегодняшнего дня. Проснулся сегодня с трудом. Позволил себе поваляться перед выходом. ## Утро Утром заходила женщина за подписями о том что внизу вывесили объявление. Пришлось соврать про фамилию чтобы не доказывалась до нее. ## Работа На работе день начался хорошо. Порефачил кодик. Дотолкали до PDP-00 задачу с галереей. А она достаточно жирная. Ещё немного побуксовал с траст факторами для одежды. Завел задачку на копирайтинг для проекта который я веду. В целом день хороший, но нет какого-то всплеска энергии как был вчера. ## Жизнь Ещё сегодня написал Макс Данилов. Спрашивал про разработку и как я поднялся. Он тоже входит в ИТ понемногу. Давал ему рекомендации. Почувствовал себя Тони Робинсоном для неформалов. Кстати, кто такой Макс Данилов я понятия не имею, надо у Ксюхи спросить кто это.   ## Идеи Кстати, только что пришла мысль записывать видеоответы на вопросы чуваков которые интересуются разработкой. А то ща последний месяц уже слишком много написало. Давно хочу начать вести публичную деятельностью и прокачать скилл работы с публикой и красноречие. ## Научился Научился подключать камеру с телефона к OBS Studio через IP видео. Завтра надо попробовать записать первое видеообращение с вопросом к подписчикам по поводу ответов на их вопросы про разработку и карьеру.'
+    }
   }
 }
 </script>
