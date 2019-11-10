@@ -13,7 +13,9 @@
         class="pa-0"
       >
         <v-btn rounded text x-small>
-          <v-icon small>mdi-arrow-left</v-icon>
+          <v-icon small>
+            mdi-arrow-left
+          </v-icon>
           20.12.97
         </v-btn>
       </v-col>
@@ -26,7 +28,6 @@
           :contenteditable="true"
           placeholder="Заголовок"
         />
-        <!-- {{ mock }} -->
       </v-col>
       <v-col
         xs="12"
@@ -37,7 +38,9 @@
       >
         <v-btn rounded text x-small>
           20.12.97
-          <v-icon small>mdi-arrow-right</v-icon>
+          <v-icon small>
+            mdi-arrow-right
+          </v-icon>
         </v-btn>
       </v-col>
     </v-row>
