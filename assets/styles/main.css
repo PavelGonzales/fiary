@@ -1,0 +1,71 @@
+:root {
+  --custom-shadow: 0px 11px 15px -7px rgba(8, 112, 184, 0.1), 0px 24px 38px 3px rgba(8, 112, 184, 0.04), 0px 9px 46px 8px rgba(8, 112, 184, 0.02) !important
+}
+.pell {
+  position: relative;
+  padding-bottom: 50px;
+}
+
+.pell-actionbar-custom-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-shadow: var(--custom-shadow);
+  border-radius: 10px;
+}
+
+.pell-button-custom-name {
+  margin: 4px;
+  padding: 4px;
+  height: 32px;
+  width: 32px;
+  transition: transform .15s ease-in;
+}
+
+.pell-button-custom-name:hover {
+  transform: scale(1.1);
+}
+
+.pell-button-selected-custom-name {
+  color: royalblue;
+}
+
+.pell-content-custom-name {
+  min-height: 200px;
+  outline: none;
+  border-radius: 10px;
+  padding: 10px;
+  transition: box-shadow .25s ease-in-out;
+}
+
+.pell-content-custom-name::before {
+  content: 'Как прошел день?';
+  display: block;
+  position: absolute;
+  font-size: 42px;
+  color: #E3F2FD;
+  line-height: 1;
+  transition: opacity .25s ease-in-out;
+  opacity: 0;
+}
+
+.pell-content-custom-name:focus {
+  box-shadow: var(--custom-shadow);
+}
+
+.pell-content-custom-name:empty::before {
+  opacity: 1;
+}
+
+.pell-content-custom-name:focus::before {
+  opacity: 0;
+}
+
+.pell-content-custom-name > img {
+  max-width: 100%;
+}
+
+.custom-shadow {
+  box-shadow: var(--custom-shadow);
+}
