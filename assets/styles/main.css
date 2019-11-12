@@ -4,15 +4,17 @@
 .pell {
   position: relative;
   padding-bottom: 50px;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .pell-actionbar-custom-name {
-  position: absolute;
+  position: sticky;
   bottom: 0;
-  left: 0;
   width: 100%;
   box-shadow: var(--custom-shadow);
   border-radius: 10px;
+  background-color: #fff;
 }
 
 .pell-button-custom-name {
@@ -36,7 +38,8 @@
   outline: none;
   border-radius: 10px;
   padding: 10px;
-  transition: box-shadow .25s ease-in-out;
+  transition: box-shadow .2s ease-in-out;
+  font-size: 26px;
 }
 
 .pell-content-custom-name::before {
@@ -46,21 +49,17 @@
   font-size: 42px;
   color: #E3F2FD;
   line-height: 1;
-  transition: opacity .25s ease-in-out;
+  transition: opacity .2s ease-in-out;
   opacity: 0;
-}
-
-.pell-content-custom-name:focus {
-  box-shadow: var(--custom-shadow);
 }
 
 .pell-content-custom-name:empty::before {
   opacity: 1;
 }
-
+/*
 .pell-content-custom-name:focus::before {
   opacity: 0;
-}
+} */
 
 .pell-content-custom-name > img {
   max-width: 100%;
@@ -68,4 +67,8 @@
 
 .custom-shadow {
   box-shadow: var(--custom-shadow);
+}
+
+.v-application {
+  font-family: 'Cormorant Garamond', serif!important;
 }

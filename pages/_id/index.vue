@@ -12,8 +12,8 @@
         align-self="center"
         class="pa-0 sticky-col d-none d-sm-flex"
       >
-        <v-btn rounded text>
-          20.12.97
+        <v-btn v-if="prev.date" rounded text nuxt :to="prev.link">
+          {{ prev.date }}
         </v-btn>
       </v-col>
       <v-col
@@ -21,6 +21,7 @@
         sm="10"
         md="8"
       >
+        <div class="currentDate">{{ current.date }}</div>
         <app-editable-filed
           :content="article.content"
         />
@@ -32,8 +33,8 @@
         align-self="center"
         class="pa-0 sticky-col d-none d-sm-flex"
       >
-        <v-btn rounded text>
-          20.12.97
+        <v-btn v-if="next.date" rounded text nuxt :to="next.link">
+          {{ next.date }}
         </v-btn>
       </v-col>
     </v-row>
@@ -50,8 +51,34 @@ export default {
 
   data () {
     return {
-      currentDate: '20121963',
       article: {}
+    }
+  },
+
+  computed: {
+    prev () {
+      const date = (this.article && this.article.date && this.article.date.prev) || ''
+      const link = date.replace(/\./g, '')
+      return {
+        date,
+        link
+      }
+    },
+    next () {
+      const date = (this.article && this.article.date && this.article.date.next) || ''
+      const link = date.replace(/\./g, '')
+      return {
+        date,
+        link
+      }
+    },
+    current () {
+      const date = (this.article && this.article.date && this.article.date.current) || ''
+      const link = date.replace(/\./g, '')
+      return {
+        date,
+        link
+      }
     }
   },
 
@@ -61,7 +88,7 @@ export default {
 
   methods: {
     async getArticle () {
-      const article = await import(`~/mocks/${this.currentDate}.js`)
+      const article = await import(`~/mocks/${this.$route.params.id}.js`)
 
       this.article = article.default
     }
@@ -77,5 +104,9 @@ export default {
   display: flex;
   align-items: center;
   height: 100vh;
+}
+
+.currentDate {
+  font-size: 150px;
 }
 </style>
