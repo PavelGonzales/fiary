@@ -1,6 +1,6 @@
 export default {
   date: {
-    prev: null,
+    prev: '18.12.1963',
     current: '19.12.1963',
     next: '20.12.1963'
   },

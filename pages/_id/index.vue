@@ -22,8 +22,11 @@
         md="8"
       >
         <div class="currentDate">{{ current.date }}</div>
-        <app-editable-filed
+        <ContentEditable
           :content="article.content"
+        />
+        <app-editable-filed
+          :content="''"
         />
       </v-col>
       <v-col
@@ -43,10 +46,12 @@
 
 <script>
 import EditableFiled from '~/components/EdittableField'
+import ContentEditable from '~/components/ContentEditable'
 
 export default {
   components: {
-    'app-editable-filed': EditableFiled
+    'app-editable-filed': EditableFiled,
+    ContentEditable
   },
 
   data () {
