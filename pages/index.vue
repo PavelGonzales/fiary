@@ -5,8 +5,8 @@
     align-center
   >
     main page
-    <div nuxt to="19121963">
+    <v-btn nuxt to="19121963">
       go to test article
-    </div>
+    </v-btn>
   </v-layout>
 </template>
