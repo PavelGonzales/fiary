@@ -50,9 +50,13 @@ export default {
   },
 
   watch: {
-    content () {
+    content (newVal) {
       this.localContent = this.content || ''
     }
+  },
+
+  created () {
+    this.localContent = this.content || ''
   },
 
   mounted () {

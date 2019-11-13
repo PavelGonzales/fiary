@@ -12,8 +12,8 @@
         align-self="center"
         class="pa-0 sticky-col d-none d-sm-flex"
       >
-        <v-btn v-if="prev.date" rounded text nuxt :to="prev.link">
-          {{ prev.date }}
+        <v-btn v-if="prev.text" rounded text nuxt :to="prev.link">
+          {{ prev.text }}
         </v-btn>
       </v-col>
       <v-col
@@ -22,10 +22,10 @@
         md="8"
       >
         <div class="currentDate">
-          {{ current.date }}
+          {{ current.text }}
         </div>
         <ContentEditable
-          :content="article.content"
+          :content="content"
         />
       </v-col>
       <v-col
@@ -35,8 +35,8 @@
         align-self="center"
         class="pa-0 sticky-col d-none d-sm-flex"
       >
-        <v-btn v-if="next.date" rounded text nuxt :to="next.link">
-          {{ next.date }}
+        <v-btn v-if="next.text" rounded text nuxt :to="next.link">
+          {{ next.text }}
         </v-btn>
       </v-col>
     </v-row>
@@ -58,41 +58,25 @@ export default {
     return +to.params.id < +from.params.id ? 'slide-right' : 'slide-left'
   },
 
-  data () {
-    return {
-      article: {}
-    }
-  },
-
   computed: {
     prev () {
-      return this.createDateLink('prev')
+      return this.article.date.prev
     },
     next () {
-      return this.createDateLink('next')
+      return this.article.date.next
     },
     current () {
-      return this.createDateLink('current')
+      return this.article.date.current
+    },
+    content () {
+      return this.article.content
     }
   },
 
-  created () {
-    this.getArticle()
-  },
-
-  methods: {
-    createDateLink (key) {
-      const date = (this.article && this.article.date && this.article.date[key]) || ''
-      const link = date.replace(/\./g, '')
-      return {
-        date,
-        link
-      }
-    },
-    async getArticle () {
-      const article = await import(`~/mocks/${this.$route.params.id}.js`)
-
-      this.article = article.default
+  async asyncData ({ store, params, $axios }) {
+    const { data } = await $axios.get(`http://localhost:3001/article/${params.id}`)
+    return {
+      article: data
     }
   }
 }
@@ -109,6 +93,6 @@ export default {
 }
 
 .currentDate {
-  font-size: 150px;
+  font-size: 90px;
 }
 </style>
