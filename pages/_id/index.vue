@@ -21,12 +21,11 @@
         sm="10"
         md="8"
       >
-        <div class="currentDate">{{ current.date }}</div>
+        <div class="currentDate">
+          {{ current.date }}
+        </div>
         <ContentEditable
           :content="article.content"
-        />
-        <app-editable-filed
-          :content="''"
         />
       </v-col>
       <v-col
@@ -45,12 +44,10 @@
 </template>
 
 <script>
-import EditableFiled from '~/components/EdittableField'
 import ContentEditable from '~/components/ContentEditable'
 
 export default {
   components: {
-    'app-editable-filed': EditableFiled,
     ContentEditable
   },
 
@@ -62,28 +59,13 @@ export default {
 
   computed: {
     prev () {
-      const date = (this.article && this.article.date && this.article.date.prev) || ''
-      const link = date.replace(/\./g, '')
-      return {
-        date,
-        link
-      }
+      return this.createDateLink('prev')
     },
     next () {
-      const date = (this.article && this.article.date && this.article.date.next) || ''
-      const link = date.replace(/\./g, '')
-      return {
-        date,
-        link
-      }
+      return this.createDateLink('next')
     },
     current () {
-      const date = (this.article && this.article.date && this.article.date.current) || ''
-      const link = date.replace(/\./g, '')
-      return {
-        date,
-        link
-      }
+      return this.createDateLink('current')
     }
   },
 
@@ -92,6 +74,14 @@ export default {
   },
 
   methods: {
+    createDateLink (key) {
+      const date = (this.article && this.article.date && this.article.date[key]) || ''
+      const link = date.replace(/\./g, '')
+      return {
+        date,
+        link
+      }
+    },
     async getArticle () {
       const article = await import(`~/mocks/${this.$route.params.id}.js`)
 

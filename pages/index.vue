@@ -4,78 +4,9 @@
     justify-center
     align-center
   >
-    <v-row justify="center" :style="{width: '100%'}">
-      <v-col
-        xs="12"
-        sm="1"
-        md="1"
-        align-self="center"
-        class="pa-0 sticky-col d-none d-sm-flex"
-      >
-        <v-btn rounded text>
-          20.12.97
-        </v-btn>
-      </v-col>
-      <v-col
-        xs="12"
-        sm="10"
-        md="8"
-      >
-        <app-editable-filed
-          :content="article.content"
-        />
-      </v-col>
-      <v-col
-        xs="12"
-        sm="1"
-        md="1"
-        align-self="center"
-        class="pa-0 sticky-col d-none d-sm-flex"
-      >
-        <v-btn rounded text>
-          20.12.97
-        </v-btn>
-      </v-col>
-    </v-row>
+    main page
+    <div nuxt to="19121963">
+      go to test article
+    </div>
   </v-layout>
 </template>
-
-<script>
-import EditableFiled from '~/components/EdittableField'
-
-export default {
-  components: {
-    'app-editable-filed': EditableFiled
-  },
-
-  data () {
-    return {
-      currentDate: '20121963',
-      article: {}
-    }
-  },
-
-  created () {
-    this.getArticle()
-  },
-
-  methods: {
-    async getArticle () {
-      const article = await import(`~/mocks/${this.currentDate}.js`)
-
-      this.article = article.default
-    }
-  }
-}
-</script>
-
-<style scoped>
-.sticky-col {
-  position: sticky;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  height: 100vh;
-}
-</style>

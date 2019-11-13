@@ -68,7 +68,7 @@ export default {
   },
 
   methods: {
-    handleContent (e) {
+    handleContent () {
       this.activeButtons = this.buttonStates
         .filter(item => item.state())
         .map(item => item.title)
@@ -82,6 +82,7 @@ export default {
     },
     handleButton (handler) {
       handler()
+      this.handleContent()
       this.$refs.content.focus()
     }
   }
