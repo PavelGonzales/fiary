@@ -10,3 +10,9 @@
     </v-btn>
   </v-layout>
 </template>
+
+<script>
+export default {
+  transition: 'slide-left'
+}
+</script>

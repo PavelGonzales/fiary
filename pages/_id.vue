@@ -51,6 +51,13 @@ export default {
     ContentEditable
   },
 
+  transition (to, from) {
+    if (!from) {
+      return 'slide-left'
+    }
+    return +to.params.id < +from.params.id ? 'slide-right' : 'slide-left'
+  },
+
   data () {
     return {
       article: {}

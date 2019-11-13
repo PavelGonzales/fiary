@@ -9,3 +9,43 @@
 .v-application {
   font-family: 'Cormorant Garamond', serif!important;
 }
+
+
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition-property: opacity, transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+}
+
+.slide-left-enter {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.slide-left-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.slide-right-enter {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.slide-right-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(10px);
+}
