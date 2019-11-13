@@ -14,7 +14,8 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Cormorant+Garamond&display=swap' }
     ]
   },
   /*
@@ -25,6 +26,7 @@ export default {
   ** Global CSS
   */
   css: [
+    '~/assets/styles/main.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -78,6 +80,7 @@ export default {
   ** Build configuration
   */
   build: {
+    analyze: true,
     /*
     ** You can extend webpack config here
     */
