@@ -6,22 +6,23 @@
   >
     <v-row justify="center" :style="{width: '100%'}">
       <v-col
-        xs="12"
         sm="1"
-        md="1"
+        md="2"
         align-self="center"
         class="pa-0 sticky-col d-none d-sm-flex"
       >
         <v-btn v-if="prev.text" rounded text nuxt :to="prev.link">
-          {{ prev.text }}
+          <v-icon class="d-md-none">
+            mdi-chevron-left
+          </v-icon>
+          <span class="d-none d-md-inline-block">{{ prev.text }}</span>
         </v-btn>
       </v-col>
       <v-col
-        xs="12"
         sm="10"
         md="8"
       >
-        <div class="currentDate">
+        <div v-if="current" class="currentDate">
           {{ current.text }}
         </div>
         <ContentEditable
@@ -29,14 +30,16 @@
         />
       </v-col>
       <v-col
-        xs="12"
         sm="1"
-        md="1"
+        md="2"
         align-self="center"
         class="pa-0 sticky-col d-none d-sm-flex"
       >
         <v-btn v-if="next.text" rounded text nuxt :to="next.link">
-          {{ next.text }}
+          <v-icon class="d-md-none">
+            mdi-chevron-right
+          </v-icon>
+          <span class="d-none d-md-inline-block">{{ next.text }}</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -44,6 +47,7 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import ContentEditable from '~/components/ContentEditable'
 
 export default {
@@ -60,16 +64,16 @@ export default {
 
   computed: {
     prev () {
-      return this.article.date.prev
+      return _get(this, 'article.date.prev') || null
     },
     next () {
-      return this.article.date.next
+      return _get(this, 'article.date.next') || null
     },
     current () {
-      return this.article.date.current
+      return _get(this, 'article.date.current') || null
     },
     content () {
-      return this.article.content
+      return _get(this, 'article.content') || ''
     }
   },
 

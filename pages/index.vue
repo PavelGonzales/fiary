@@ -5,7 +5,7 @@
     align-center
   >
     main page
-    <v-btn nuxt to="19121963">
+    <v-btn nuxt to="2019.10.27">
       go to test article
     </v-btn>
   </v-layout>
