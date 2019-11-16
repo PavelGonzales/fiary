@@ -1,12 +1,6 @@
 
 <template>
   <div>
-    <div
-      ref="content"
-      :class="$style.content"
-      :contenteditable="contenteditable"
-      v-html="localContent"
-    />
     <div :class="$style.buttons">
       <button
         v-for="button in actions"
@@ -15,7 +9,56 @@
         @click="handleButton(button.handler)"
         v-html="button.icon"
       />
+      <v-spacer />
+      <v-menu
+        offset-y
+        left
+        origin="top right"
+        transition="scale-transition"
+      >
+        <template v-slot:activator="{ on }">
+          <v-avatar
+            size="26"
+            tile
+            class="mr-2"
+            v-on="on"
+          >
+            <img
+              v-if="user.avatar"
+              :src="user.avatar"
+              :alt="`${user.name} ${user.surname}`"
+            >
+            <span v-else class="white--text headline">
+              {{ user.sign }}
+            </span>
+          </v-avatar>
+        </template>
+
+        <v-list>
+          <v-list-item nuxt to="/">
+            <v-list-item-title>Главная</v-list-item-title>
+          </v-list-item>
+          <v-list-item nuxt to="/settings">
+            <v-list-item-title>Найстройки</v-list-item-title>
+          </v-list-item>
+          <v-list-item nuxt to="/list">
+            <v-list-item-title>Список записей</v-list-item-title>
+          </v-list-item>
+          <v-list-item nuxt to="/about">
+            <v-list-item-title>О проекте</v-list-item-title>
+          </v-list-item>
+          <v-list-item nuxt to="/help">
+            <v-list-item-title>Помощь</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
+    <div
+      ref="content"
+      :class="$style.content"
+      :contenteditable="contenteditable"
+      v-html="localContent"
+    />
   </div>
 </template>
 
@@ -39,7 +82,13 @@ export default {
     return {
       localContent: '<p></p>',
       actions,
-      activeButtons: []
+      activeButtons: [],
+      user: {
+        avatar: 'https://cdn.vuetifyjs.com/images/john.jpg',
+        name: 'Pavel',
+        surname: 'Gonzales',
+        sign: 'PG'
+      }
     }
   },
 
@@ -95,11 +144,15 @@ export default {
 <style module>
 .buttons {
   position: sticky;
-  bottom: 0;
+  top: 12px;
   width: 100%;
   box-shadow: var(--custom-shadow);
   border-radius: 10px;
   background-color: #fff;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .button {
@@ -131,7 +184,7 @@ export default {
   display: block;
   position: absolute;
   font-size: 42px;
-  color: #E3F2FD;
+  color: var(--placeholder-gray);;
   line-height: 1;
   transition: opacity .2s ease-in-out;
   opacity: 0;

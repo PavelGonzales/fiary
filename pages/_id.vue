@@ -15,12 +15,13 @@
           <v-icon class="d-md-none">
             mdi-chevron-left
           </v-icon>
-          <span class="d-none d-md-inline-block">{{ prev.text }}</span>
+          <span class="d-none d-md-inline-block text-lowercase">{{ prev.text }}</span>
         </v-btn>
       </v-col>
       <v-col
         sm="10"
         md="8"
+        lg="6"
       >
         <HeadingDatePicker
           :date="current.link"
@@ -40,7 +41,7 @@
           <v-icon class="d-md-none">
             mdi-chevron-right
           </v-icon>
-          <span class="d-none d-md-inline-block">{{ next.text }}</span>
+          <span class="d-none d-md-inline-block text-lowercase">{{ next.text }}</span>
         </v-btn>
       </v-col>
     </v-row>

@@ -70,6 +70,6 @@ export default {
 }
 
 .emptyDate {
-  color: #E3F2FD;
+  color: var(--placeholder-gray);
 }
 </style>
