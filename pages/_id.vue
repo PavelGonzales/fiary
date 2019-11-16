@@ -22,9 +22,10 @@
         sm="10"
         md="8"
       >
-        <div v-if="current" class="currentDate">
-          {{ current.text }}
-        </div>
+        <HeadingDatePicker
+          :date="current.link"
+          class="currentDate"
+        />
         <ContentEditable
           :content="content"
         />
@@ -49,10 +50,12 @@
 <script>
 import _get from 'lodash/get'
 import ContentEditable from '~/components/ContentEditable'
+import HeadingDatePicker from '~/components/HeadingDatePicker'
 
 export default {
   components: {
-    ContentEditable
+    ContentEditable,
+    HeadingDatePicker
   },
 
   transition (to, from) {
@@ -64,13 +67,13 @@ export default {
 
   computed: {
     prev () {
-      return _get(this, 'article.date.prev') || null
+      return _get(this, 'article.date.prev') || {}
     },
     next () {
-      return _get(this, 'article.date.next') || null
+      return _get(this, 'article.date.next') || {}
     },
     current () {
-      return _get(this, 'article.date.current') || null
+      return _get(this, 'article.date.current') || {}
     },
     content () {
       return _get(this, 'article.content') || ''
