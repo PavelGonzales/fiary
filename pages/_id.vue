@@ -6,37 +6,41 @@
   >
     <v-row justify="center" :style="{width: '100%'}">
       <v-col
-        xs="12"
         sm="1"
-        md="1"
+        md="2"
         align-self="center"
         class="pa-0 sticky-col d-none d-sm-flex"
       >
-        <v-btn v-if="prev.date" rounded text nuxt :to="prev.link">
-          {{ prev.date }}
+        <v-btn v-if="prev.text" rounded text nuxt :to="prev.link">
+          <v-icon class="d-md-none">
+            mdi-chevron-left
+          </v-icon>
+          <span class="d-none d-md-inline-block">{{ prev.text }}</span>
         </v-btn>
       </v-col>
       <v-col
-        xs="12"
         sm="10"
         md="8"
       >
-        <div class="currentDate">
-          {{ current.date }}
-        </div>
+        <HeadingDatePicker
+          :date="current.link"
+          class="currentDate"
+        />
         <ContentEditable
-          :content="article.content"
+          :content="content"
         />
       </v-col>
       <v-col
-        xs="12"
         sm="1"
-        md="1"
+        md="2"
         align-self="center"
         class="pa-0 sticky-col d-none d-sm-flex"
       >
-        <v-btn v-if="next.date" rounded text nuxt :to="next.link">
-          {{ next.date }}
+        <v-btn v-if="next.text" rounded text nuxt :to="next.link">
+          <v-icon class="d-md-none">
+            mdi-chevron-right
+          </v-icon>
+          <span class="d-none d-md-inline-block">{{ next.text }}</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -44,11 +48,14 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import ContentEditable from '~/components/ContentEditable'
+import HeadingDatePicker from '~/components/HeadingDatePicker'
 
 export default {
   components: {
-    ContentEditable
+    ContentEditable,
+    HeadingDatePicker
   },
 
   transition (to, from) {
@@ -58,41 +65,25 @@ export default {
     return +to.params.id < +from.params.id ? 'slide-right' : 'slide-left'
   },
 
-  data () {
-    return {
-      article: {}
-    }
-  },
-
   computed: {
     prev () {
-      return this.createDateLink('prev')
+      return _get(this, 'article.date.prev') || {}
     },
     next () {
-      return this.createDateLink('next')
+      return _get(this, 'article.date.next') || {}
     },
     current () {
-      return this.createDateLink('current')
+      return _get(this, 'article.date.current') || {}
+    },
+    content () {
+      return _get(this, 'article.content') || ''
     }
   },
 
-  created () {
-    this.getArticle()
-  },
-
-  methods: {
-    createDateLink (key) {
-      const date = (this.article && this.article.date && this.article.date[key]) || ''
-      const link = date.replace(/\./g, '')
-      return {
-        date,
-        link
-      }
-    },
-    async getArticle () {
-      const article = await import(`~/mocks/${this.$route.params.id}.js`)
-
-      this.article = article.default
+  async asyncData ({ store, params, $axios }) {
+    const { data } = await $axios.get(`http://localhost:3001/article/${params.id}`)
+    return {
+      article: data
     }
   }
 }
@@ -109,6 +100,6 @@ export default {
 }
 
 .currentDate {
-  font-size: 150px;
+  font-size: 90px;
 }
 </style>

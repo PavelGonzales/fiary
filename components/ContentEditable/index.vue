@@ -50,9 +50,13 @@ export default {
   },
 
   watch: {
-    content () {
+    content (newVal) {
       this.localContent = this.content || ''
     }
+  },
+
+  created () {
+    this.localContent = this.content || ''
   },
 
   mounted () {
@@ -118,7 +122,6 @@ export default {
   min-height: 200px;
   outline: none;
   border-radius: 10px;
-  padding: 10px;
   transition: box-shadow .2s ease-in-out;
   font-size: 26px;
 }
