@@ -10,16 +10,19 @@
         md="8"
         lg="6"
       >
-        <HeadingDatePicker :class="$style.currentDate" />
-        <ContentEditable
-          :content="content"
+        <HeadingDatePicker
+          :filled-dates="filledDates"
+          :class="$style.currentDate"
+          @changeDate="onChangeDate"
         />
+        <ContentEditable />
       </v-col>
     </v-row>
   </v-layout>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ContentEditable from '~/components/ContentEditable'
 import HeadingDatePicker from '~/components/HeadingDatePicker'
 
@@ -37,7 +40,22 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      articles: ({ articles }) => articles.shortList
+    }),
+    filledDates () {
+      return this.articles.map(item => item.date.link)
+    }
+  },
 
+  async fetch ({ store }) {
+    await store.dispatch('articles/GET_ARTICLE')
+  },
+
+  methods: {
+    onChangeDate (date) {
+      this.$router.push(date)
+    }
   }
 }
 </script>
@@ -45,5 +63,11 @@ export default {
 <style module>
 .currentDate {
   font-size: 90px;
+}
+
+@media (max-width: 599px) {
+  .currentDate {
+    font-size: 13vw;
+  }
 }
 </style>

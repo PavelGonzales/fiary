@@ -68,7 +68,7 @@ import { default as actions, exec } from './panel_actions'
 
 export default {
   props: {
-    content: {
+    value: {
       type: String,
       default: ''
     },
@@ -98,14 +98,8 @@ export default {
     }
   },
 
-  watch: {
-    content (newVal) {
-      this.localContent = this.content || ''
-    }
-  },
-
   created () {
-    this.localContent = this.content || ''
+    this.localContent = this.value || ''
   },
 
   mounted () {
@@ -127,11 +121,14 @@ export default {
         .map(item => item.title)
     },
     handleInput ({ target: { firstChild } }) {
+      let contentInnerHTML = this.$refs.content.innerHTML
+
       if (firstChild && firstChild.nodeType === 3) {
         exec('formatBlock', '<p>')
-      } else if (this.$refs.content.innerHTML === '<p><br></p>') {
-        this.$refs.content.innerHTML = '<p></p>'
+      } else if (contentInnerHTML === '<p><br></p>') {
+        contentInnerHTML = '<p></p>'
       }
+      this.$emit('input', contentInnerHTML)
     },
     handleButton (handler) {
       handler()
@@ -196,5 +193,15 @@ export default {
 
 .content > img {
   max-width: 100%;
+}
+
+.content > h1 {
+  line-height: 1.1;
+}
+
+@media (max-width: 599px) {
+  .content > h1 {
+    font-size: 36px;
+  }
 }
 </style>

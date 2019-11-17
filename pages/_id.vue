@@ -24,11 +24,13 @@
         lg="6"
       >
         <HeadingDatePicker
-          :date="current.link"
+          :date="date"
+          :filled-dates="filledDates"
           class="currentDate"
+          @changeDate="onChangeDate"
         />
         <ContentEditable
-          :content="content"
+          v-model="contentModel"
         />
       </v-col>
       <v-col
@@ -50,6 +52,7 @@
 
 <script>
 import _get from 'lodash/get'
+import { mapState } from 'vuex'
 import ContentEditable from '~/components/ContentEditable'
 import HeadingDatePicker from '~/components/HeadingDatePicker'
 
@@ -66,7 +69,19 @@ export default {
     return +to.params.id < +from.params.id ? 'slide-right' : 'slide-left'
   },
 
+  data () {
+    return {
+      contentModel: ''
+    }
+  },
+
   computed: {
+    ...mapState({
+      articles: ({ articles }) => articles.shortList
+    }),
+    filledDates () {
+      return this.articles.map(item => item.date.link)
+    },
     prev () {
       return _get(this, 'article.date.prev') || {}
     },
@@ -78,6 +93,9 @@ export default {
     },
     content () {
       return _get(this, 'article.content') || ''
+    },
+    date () {
+      return this.$route.params.id
     }
   },
 
@@ -85,6 +103,27 @@ export default {
     const { data } = await $axios.get(`http://localhost:3001/article/${params.id}`)
     return {
       article: data
+    }
+  },
+
+  async fetch ({ store }) {
+    await store.dispatch('articles/GET_ARTICLE')
+  },
+
+  created () {
+    this.contentModel = this.content
+  },
+
+  beforeDestroy () {
+    this.saveChanges()
+  },
+
+  methods: {
+    onChangeDate (date) {
+      this.$router.push(date)
+    },
+    saveChanges () {
+      console.log(this.contentModel)
     }
   }
 }
@@ -102,5 +141,11 @@ export default {
 
 .currentDate {
   font-size: 90px;
+}
+
+@media (max-width: 599px) {
+  .currentDate {
+    font-size: 13vw;
+  }
 }
 </style>
