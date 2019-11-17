@@ -1,6 +1,6 @@
 
 <template>
-  <v-container class="pa-0">
+  <v-container>
     <v-layout
       justify-center
       align-center
@@ -10,8 +10,11 @@
           sm="10"
           md="8"
           lg="6"
-          class="d-flex"
+          class="d-flex align-center"
         >
+          <div v-if="title" :class="$style.title">
+            {{ title }}
+          </div>
           <v-spacer />
           <v-menu
             offset-y
@@ -39,20 +42,13 @@
             </template>
 
             <v-list>
-              <v-list-item nuxt to="/">
-                <v-list-item-title>Главная</v-list-item-title>
-              </v-list-item>
-              <v-list-item nuxt to="/settings">
-                <v-list-item-title>Найстройки</v-list-item-title>
-              </v-list-item>
-              <v-list-item nuxt to="/list">
-                <v-list-item-title>Список записей</v-list-item-title>
-              </v-list-item>
-              <v-list-item nuxt to="/about">
-                <v-list-item-title>О проекте</v-list-item-title>
-              </v-list-item>
-              <v-list-item nuxt to="/help">
-                <v-list-item-title>Помощь</v-list-item-title>
+              <v-list-item
+                v-for="item in menuList"
+                :key="item.link"
+                nuxt
+                :to="item.link"
+              >
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -65,13 +61,9 @@
 <script>
 export default {
   props: {
-    content: {
+    title: {
       type: String,
       default: ''
-    },
-    contenteditable: {
-      type: Boolean,
-      default: true
     }
   },
 
@@ -82,27 +74,39 @@ export default {
         name: 'Pavel',
         surname: 'Gonzales',
         sign: 'PG'
-      }
+      },
+      menuList: [
+        {
+          text: 'Главная',
+          link: '/'
+        },
+        {
+          text: 'Найстройки',
+          link: 'settings'
+        },
+        {
+          text: 'Хроника',
+          link: 'list'
+        },
+        {
+          text: 'О проекте',
+          link: 'about'
+        },
+        {
+          text: 'Помощь',
+          link: 'help'
+        }
+      ]
     }
-  },
-
-  computed: {
-
-  },
-
-  mounted () {
-  },
-
-  destroyed () {
-  },
-
-  methods: {
-
   }
 }
 </script>
 <style module>
 .avatar {
   border-radius: 10px;
+}
+
+.title {
+  font-size: 36px;
 }
 </style>
