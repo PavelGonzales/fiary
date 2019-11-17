@@ -84,7 +84,7 @@ export default {
       actions,
       activeButtons: [],
       user: {
-        avatar: 'https://cdn.vuetifyjs.com/images/john.jpg',
+        avatar: 'https://scontent-arn2-2.xx.fbcdn.net/v/t1.0-9/75231871_1139264909603819_3068452561863311360_n.jpg?_nc_cat=101&_nc_oc=AQmrFJ1URGykhYneDShWd8Ja67nRLZRm1oU9A6vcq-tzJ5b6hTxsYuwf60cof_tZ7Io&_nc_ht=scontent-arn2-2.xx&oh=0795d2d2dde7db665f6ce9b4a83e4f5f&oe=5E8700A6',
         name: 'Pavel',
         surname: 'Gonzales',
         sign: 'PG'
@@ -191,16 +191,16 @@ export default {
   opacity: 1;
 }
 
-.content > img {
+.content img {
   max-width: 100%;
 }
 
-.content > h1 {
+.content h1 {
   line-height: 1.1;
 }
 
 @media (max-width: 599px) {
-  .content > h1 {
+  .content h1 {
     font-size: 36px;
   }
 }

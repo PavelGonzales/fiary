@@ -49,7 +49,7 @@ export default {
   },
 
   async fetch ({ store }) {
-    await store.dispatch('articles/GET_ARTICLE')
+    await store.dispatch('articles/GET_ARTICLE_LIST')
   },
 
   methods: {

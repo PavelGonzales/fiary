@@ -99,6 +99,12 @@ export default {
     }
   },
 
+  watch: {
+    $route (to, from) {
+      this.saveChanges()
+    }
+  },
+
   async asyncData ({ store, params, $axios }) {
     const { data } = await $axios.get(`http://localhost:3001/article/${params.id}`)
     return {
@@ -107,7 +113,7 @@ export default {
   },
 
   async fetch ({ store }) {
-    await store.dispatch('articles/GET_ARTICLE')
+    await store.dispatch('articles/GET_ARTICLE_LIST')
   },
 
   created () {
@@ -123,7 +129,13 @@ export default {
       this.$router.push(date)
     },
     saveChanges () {
-      console.log(this.contentModel)
+      const shortContent = ''
+
+      this.$store.dispatch('articles/CREATE_ARTICLE', {
+        content: this.contentModel,
+        shortContent,
+        date: this.current.link
+      })
     }
   }
 }
