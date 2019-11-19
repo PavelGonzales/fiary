@@ -13,6 +13,8 @@
       <v-date-picker
         v-model="dateModel"
         no-title
+        :events="filledDates"
+        event-color="green lighten-1"
         @change="save"
       />
     </v-dialog>
@@ -31,6 +33,10 @@ export default {
     date: {
       type: String,
       default: ''
+    },
+    filledDates: {
+      type: Array,
+      default: () => []
     }
   },
 
@@ -59,6 +65,7 @@ export default {
   methods: {
     save (date) {
       this.$refs.dialog.save(date)
+      this.$emit('changeDate', date)
     }
   }
 }
@@ -66,7 +73,7 @@ export default {
 
 <style scoped>
 .computedDate {
-  height: 135px;
+  height: 1.5em;
 }
 
 .emptyDate {

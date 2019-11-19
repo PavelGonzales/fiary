@@ -24,11 +24,13 @@
         lg="6"
       >
         <HeadingDatePicker
-          :date="current.link"
+          :date="date"
+          :filled-dates="filledDates"
           class="currentDate"
+          @changeDate="onChangeDate"
         />
         <ContentEditable
-          :content="content"
+          v-model="contentModel"
         />
       </v-col>
       <v-col
@@ -50,6 +52,8 @@
 
 <script>
 import _get from 'lodash/get'
+import dayjs from 'dayjs'
+import { mapState } from 'vuex'
 import ContentEditable from '~/components/ContentEditable'
 import HeadingDatePicker from '~/components/HeadingDatePicker'
 
@@ -66,18 +70,43 @@ export default {
     return +to.params.id < +from.params.id ? 'slide-right' : 'slide-left'
   },
 
+  data () {
+    return {
+      contentModel: '',
+      copyDateFromParams: undefined
+    }
+  },
+
   computed: {
+    ...mapState({
+      articles: ({ articles }) => articles.shortList
+    }),
+    filledDates () {
+      return this.articles.map(item => item.date.link)
+    },
     prev () {
       return _get(this, 'article.date.prev') || {}
     },
     next () {
-      return _get(this, 'article.date.next') || {}
+      return _get(this, 'article.date.next') || {
+        text: 'Новая запись',
+        link: dayjs().add(1, 'd').format('YYYY-MM-DD')
+      }
     },
     current () {
       return _get(this, 'article.date.current') || {}
     },
     content () {
       return _get(this, 'article.content') || ''
+    },
+    date () {
+      return this.$route.params.id
+    }
+  },
+
+  watch: {
+    $route (to, from) {
+      this.saveChanges()
     }
   },
 
@@ -85,6 +114,40 @@ export default {
     const { data } = await $axios.get(`http://localhost:3001/article/${params.id}`)
     return {
       article: data
+    }
+  },
+
+  async fetch ({ store }) {
+    await store.dispatch('articles/GET_ARTICLE_LIST')
+  },
+
+  created () {
+    this.contentModel = this.content
+    this.copyDateFromParams = this.date
+  },
+
+  beforeDestroy () {
+    this.saveChanges()
+  },
+
+  methods: {
+    onChangeDate (date) {
+      this.$router.push(date)
+    },
+    saveChanges () {
+      if (this.contentModel) {
+        const shortContent = ''
+
+        this.$store.dispatch('articles/CREATE_ARTICLE', {
+          content: this.contentModel,
+          shortContent,
+          date: this.copyDateFromParams
+        })
+      } else {
+        this.$store.dispatch('articles/REMOVE_ARTICLE', {
+          date: this.copyDateFromParams
+        })
+      }
     }
   }
 }
@@ -102,5 +165,11 @@ export default {
 
 .currentDate {
   font-size: 90px;
+}
+
+@media (max-width: 599px) {
+  .currentDate {
+    font-size: 13vw;
+  }
 }
 </style>

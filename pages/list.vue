@@ -34,6 +34,7 @@
 
 <script>
 import { mapState } from 'vuex'
+
 export default {
   transition: 'slide-left',
 
@@ -43,8 +44,8 @@ export default {
     })
   },
 
-  created () {
-    this.$store.dispatch('articles/GET_ARTICLE')
+  async fetch ({ store }) {
+    await store.dispatch('articles/GET_ARTICLE_LIST')
   }
 }
 </script>
@@ -65,6 +66,7 @@ export default {
     font-size: 14vw;
   }
 }
+
 .cardContent {
   font-size: 24px;
 }

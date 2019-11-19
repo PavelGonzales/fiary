@@ -9,6 +9,19 @@
         @click="handleButton(button.handler)"
         v-html="button.icon"
       />
+      <input
+        id="file"
+        type="file"
+        name="file"
+        accept="image/*"
+        :class="$style.fileInput"
+        @change="uploadImage"
+      >
+      <label for="file" :class="$style.button">
+        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
+        </svg>
+      </label>
       <v-spacer />
       <v-menu
         offset-y
@@ -68,7 +81,7 @@ import { default as actions, exec } from './panel_actions'
 
 export default {
   props: {
-    content: {
+    value: {
       type: String,
       default: ''
     },
@@ -84,7 +97,7 @@ export default {
       actions,
       activeButtons: [],
       user: {
-        avatar: 'https://cdn.vuetifyjs.com/images/john.jpg',
+        avatar: 'https://scontent-arn2-2.xx.fbcdn.net/v/t1.0-9/75231871_1139264909603819_3068452561863311360_n.jpg?_nc_cat=101&_nc_oc=AQmrFJ1URGykhYneDShWd8Ja67nRLZRm1oU9A6vcq-tzJ5b6hTxsYuwf60cof_tZ7Io&_nc_ht=scontent-arn2-2.xx&oh=0795d2d2dde7db665f6ce9b4a83e4f5f&oe=5E8700A6',
         name: 'Pavel',
         surname: 'Gonzales',
         sign: 'PG'
@@ -98,14 +111,8 @@ export default {
     }
   },
 
-  watch: {
-    content (newVal) {
-      this.localContent = this.content || ''
-    }
-  },
-
   created () {
-    this.localContent = this.content || ''
+    this.localContent = this.value || ''
   },
 
   mounted () {
@@ -127,16 +134,31 @@ export default {
         .map(item => item.title)
     },
     handleInput ({ target: { firstChild } }) {
+      let contentInnerHTML = this.$refs.content.innerHTML
+
       if (firstChild && firstChild.nodeType === 3) {
         exec('formatBlock', '<p>')
-      } else if (this.$refs.content.innerHTML === '<p><br></p>') {
-        this.$refs.content.innerHTML = '<p></p>'
+      } else if (contentInnerHTML === '<p><br></p>') {
+        contentInnerHTML = '<p></p>'
       }
+      this.$emit('input', contentInnerHTML)
     },
     handleButton (handler) {
       handler()
       this.handleContent()
       this.$refs.content.focus()
+    },
+    async uploadImage (event) {
+      const files = event.target.files
+      const formData = new FormData()
+      formData.append('image', files[0], files[0].filename)
+
+      const image = await this.$store.dispatch('articles/FILE_UPLOAD', formData)
+
+      if (image.path) {
+        this.$refs.content.focus()
+        exec('insertImage', image.path)
+      }
     }
   }
 }
@@ -161,6 +183,8 @@ export default {
   height: 32px;
   width: 32px;
   transition: transform .15s ease-in;
+  box-sizing: border-box;
+  cursor: pointer;
 }
 
 .button:hover {
@@ -169,6 +193,20 @@ export default {
 
 .button.active {
   color: royalblue;
+}
+
+.fileInput {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.fileInput:focus + .button {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
 }
 
 .content {
@@ -194,7 +232,17 @@ export default {
   opacity: 1;
 }
 
-.content > img {
+.content img {
   max-width: 100%;
+}
+
+.content h1 {
+  line-height: 1.1;
+}
+
+@media (max-width: 599px) {
+  .content h1 {
+    font-size: 36px;
+  }
 }
 </style>
