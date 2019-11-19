@@ -52,6 +52,7 @@
 
 <script>
 import _get from 'lodash/get'
+import dayjs from 'dayjs'
 import { mapState } from 'vuex'
 import ContentEditable from '~/components/ContentEditable'
 import HeadingDatePicker from '~/components/HeadingDatePicker'
@@ -87,7 +88,10 @@ export default {
       return _get(this, 'article.date.prev') || {}
     },
     next () {
-      return _get(this, 'article.date.next') || {}
+      return _get(this, 'article.date.next') || {
+        text: 'Новая запись',
+        link: dayjs().add(1, 'd').format('YYYY-MM-DD')
+      }
     },
     current () {
       return _get(this, 'article.date.current') || {}
@@ -131,13 +135,19 @@ export default {
       this.$router.push(date)
     },
     saveChanges () {
-      const shortContent = ''
+      if (this.contentModel) {
+        const shortContent = ''
 
-      this.$store.dispatch('articles/CREATE_ARTICLE', {
-        content: this.contentModel,
-        shortContent,
-        date: this.copyDateFromParams
-      })
+        this.$store.dispatch('articles/CREATE_ARTICLE', {
+          content: this.contentModel,
+          shortContent,
+          date: this.copyDateFromParams
+        })
+      } else {
+        this.$store.dispatch('articles/REMOVE_ARTICLE', {
+          date: this.copyDateFromParams
+        })
+      }
     }
   }
 }

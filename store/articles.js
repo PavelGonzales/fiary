@@ -37,6 +37,14 @@ export default {
       } catch (err) {
         console.log('Ошибка articles/FILE_UPLOAD')
       }
+    },
+
+    async REMOVE_ARTICLE ({ commit }, { date }) {
+      try {
+        await this.$axios.post(`http://localhost:3001/article/remove/`, { date })
+      } catch (err) {
+        console.log('Ошибка articles/REMOVE_ARTICLE')
+      }
     }
   }
 }
