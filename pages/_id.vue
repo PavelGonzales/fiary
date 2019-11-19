@@ -71,7 +71,8 @@ export default {
 
   data () {
     return {
-      contentModel: ''
+      contentModel: '',
+      copyDateFromParams: undefined
     }
   },
 
@@ -118,6 +119,7 @@ export default {
 
   created () {
     this.contentModel = this.content
+    this.copyDateFromParams = this.date
   },
 
   beforeDestroy () {
@@ -134,7 +136,7 @@ export default {
       this.$store.dispatch('articles/CREATE_ARTICLE', {
         content: this.contentModel,
         shortContent,
-        date: this.current.link
+        date: this.copyDateFromParams
       })
     }
   }

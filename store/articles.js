@@ -20,11 +20,22 @@ export default {
 
     async GET_ARTICLE_LIST ({ commit }) {
       try {
-        const articles = await this.$axios.get(`http://localhost:3001/article/list/`)
+        const { data } = await this.$axios.get(`http://localhost:3001/article/list/`)
 
-        commit('setShortList', articles.data)
+        commit('setShortList', data)
       } catch (err) {
         console.log('Ошибка articles/GET_ARTICLE_LIST')
+      }
+    },
+
+    async FILE_UPLOAD ({ commit }, file) {
+      try {
+        const { data } = await this.$axios.post(`http://localhost:3001/article/fileUpload/`, file, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        return data
+      } catch (err) {
+        console.log('Ошибка articles/FILE_UPLOAD')
       }
     }
   }

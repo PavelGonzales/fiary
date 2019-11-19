@@ -34,27 +34,27 @@ export default {
       listMenu: [
         {
           text: 'Go to test article',
-          link: '2019-10-27'
+          link: '/2019-10-27'
         },
         {
           text: 'Создать запись',
-          link: 'new'
+          link: '/new'
         },
         {
           text: 'Список записей',
-          link: 'list'
+          link: '/list'
         },
         {
           text: 'Настройки',
-          link: 'settings'
+          link: '/settings'
         },
         {
           text: 'О проекте',
-          link: 'about'
+          link: '/about'
         },
         {
           text: 'Помощь',
-          link: 'help'
+          link: '/help'
         }
       ]
     }
