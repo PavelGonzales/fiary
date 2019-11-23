@@ -14,7 +14,7 @@ export default {
       try {
         await this.$axios.post(`http://localhost:3001/article/add/`, { content, shortContent, date })
       } catch (err) {
-        console.log('Ошибка articles/CREATE_ARTICLE')
+        console.log('Ошибка articles/CREATE_ARTICLE', err)
       }
     },
 
@@ -24,7 +24,7 @@ export default {
 
         commit('setShortList', data)
       } catch (err) {
-        console.log('Ошибка articles/GET_ARTICLE_LIST')
+        console.log('Ошибка articles/GET_ARTICLE_LIST', err)
       }
     },
 
@@ -35,7 +35,7 @@ export default {
         })
         return data
       } catch (err) {
-        console.log('Ошибка articles/FILE_UPLOAD')
+        console.log('Ошибка articles/FILE_UPLOAD', err)
       }
     },
 
@@ -43,7 +43,7 @@ export default {
       try {
         await this.$axios.post(`http://localhost:3001/article/remove/`, { date })
       } catch (err) {
-        console.log('Ошибка articles/REMOVE_ARTICLE')
+        console.log('Ошибка articles/REMOVE_ARTICLE', err)
       }
     }
   }

@@ -58,6 +58,8 @@ import ContentEditable from '~/components/ContentEditable'
 import HeadingDatePicker from '~/components/HeadingDatePicker'
 
 export default {
+  middleware: 'auth',
+
   components: {
     ContentEditable,
     HeadingDatePicker

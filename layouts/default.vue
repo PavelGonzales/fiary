@@ -9,11 +9,15 @@
         <nuxt />
       </v-container>
     </v-content>
+    <AuthModal :open="open" />
   </v-app>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import Header from '~/components/Header'
+import AuthModal from '~/components/AuthModal'
 
 const routerNamesMap = Object.freeze({
   settings: 'Найстройки',
@@ -31,15 +35,25 @@ const allowedRouterNames = Object.freeze([
 
 export default {
   components: {
-    Header
+    Header,
+    AuthModal
   },
 
   computed: {
+    ...mapState('modal', {
+      open: ({ auth }) => auth.open
+    }),
     isShowHeader () {
       return allowedRouterNames.includes(this.$route.name)
     },
     headerTitle () {
       return routerNamesMap[this.$route.name]
+    }
+  },
+
+  created () {
+    if (this.$route.query.auth === 'open') {
+      this.$store.dispatch('modal/auth/TOGGLE', true)
     }
   }
 }
