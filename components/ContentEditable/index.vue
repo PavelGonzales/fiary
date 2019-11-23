@@ -41,9 +41,9 @@
               :src="user.avatar"
               :alt="`${user.name} ${user.surname}`"
             >
-            <span v-else class="white--text headline">
-              {{ user.sign }}
-            </span>
+            <v-icon v-else>
+              mdi-account-circle
+            </v-icon>
           </v-avatar>
         </template>
 
@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 /* eslint-disable import/no-named-default */
 import { default as actions, exec } from './panel_actions'
 
@@ -95,17 +96,15 @@ export default {
     return {
       localContent: '<p></p>',
       actions,
-      activeButtons: [],
-      user: {
-        avatar: 'https://scontent-arn2-2.xx.fbcdn.net/v/t1.0-9/75231871_1139264909603819_3068452561863311360_n.jpg?_nc_cat=101&_nc_oc=AQmrFJ1URGykhYneDShWd8Ja67nRLZRm1oU9A6vcq-tzJ5b6hTxsYuwf60cof_tZ7Io&_nc_ht=scontent-arn2-2.xx&oh=0795d2d2dde7db665f6ce9b4a83e4f5f&oe=5E8700A6',
-        name: 'Pavel',
-        surname: 'Gonzales',
-        sign: 'PG'
-      }
+      activeButtons: []
     }
   },
 
   computed: {
+    ...mapState({
+      user: ({ user }) => user,
+      isLoggedIn: ({ auth }) => auth.isLoggedIn
+    }),
     buttonStates () {
       return Object.values(actions).filter(item => item.state)
     }
