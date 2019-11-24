@@ -77,8 +77,8 @@ export default {
           link: '/'
         },
         {
-          text: 'Найстройки',
-          link: 'settings'
+          text: 'Профиль',
+          link: 'profile'
         },
         {
           text: 'Хроника',

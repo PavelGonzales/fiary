@@ -4,11 +4,12 @@
     justify-center
     align-center
   >
-    <v-row justify="center" :style="{width: '100%', 'font-size': '24px'}">
+    <v-row justify="center" :style="{'font-size': '24px'}">
       <v-col
-        xs="12"
+        cols="12"
         sm="10"
         md="8"
+        lg="6"
       >
         <p class="text-center">
           <img alt="Fiary Logo" width="100%" src="/logo.svg">

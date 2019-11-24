@@ -51,8 +51,8 @@
           <v-list-item nuxt to="/">
             <v-list-item-title>Главная</v-list-item-title>
           </v-list-item>
-          <v-list-item nuxt to="/settings">
-            <v-list-item-title>Найстройки</v-list-item-title>
+          <v-list-item nuxt to="/profile">
+            <v-list-item-title>Профиль</v-list-item-title>
           </v-list-item>
           <v-list-item nuxt to="/list">
             <v-list-item-title>Список записей</v-list-item-title>

@@ -20,14 +20,14 @@ import Header from '~/components/Header'
 import AuthModal from '~/components/AuthModal'
 
 const routerNamesMap = Object.freeze({
-  settings: 'Найстройки',
+  profile: 'Профиль',
   list: 'Хроника',
   about: 'О проекте',
   help: 'Помощь'
 })
 
 const allowedRouterNames = Object.freeze([
-  'settings',
+  'profile',
   'list',
   'about',
   'help'
@@ -40,8 +40,9 @@ export default {
   },
 
   computed: {
-    ...mapState('modal', {
-      open: ({ auth }) => auth.open
+    ...mapState({
+      open: ({ modal }) => modal.auth.open,
+      isLoggedIn: ({ auth }) => auth.isLoggedIn
     }),
     isShowHeader () {
       return allowedRouterNames.includes(this.$route.name)
@@ -54,6 +55,12 @@ export default {
   created () {
     if (this.$route.query.auth === 'open') {
       this.$store.dispatch('modal/auth/TOGGLE', true)
+    }
+  },
+
+  mounted () {
+    if (this.isLoggedIn) {
+      this.$store.dispatch('articles/GET_ARTICLE_LIST')
     }
   }
 }
