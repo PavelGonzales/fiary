@@ -24,9 +24,11 @@ export default async function async ({ req, store, redirect, $axios }) {
     })
 
     try {
-      await store.dispatch('ME')
+      const me = await store.dispatch('ME')
 
-      store.dispatch('SET_TOKEN', token)
+      if (!me.error) {
+        store.dispatch('SET_TOKEN', token)
+      }
     } catch (err) {
       console.log('Ошибка проверки токена')
     }

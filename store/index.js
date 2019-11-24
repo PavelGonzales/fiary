@@ -9,6 +9,8 @@ export const state = () => ({
   user: {
     name: '',
     surname: '',
+    username: '',
+    sign: '',
     avatar: '',
     email: ''
   },
@@ -29,7 +31,11 @@ export const mutations = {
 
   setUnauthUser (state) {
     state.user = {
+      name: '',
+      surname: '',
       username: '',
+      sign: '',
+      avatar: '',
       email: ''
     }
     state.auth = {
@@ -120,7 +126,15 @@ export const actions = {
   },
 
   SET_USER ({ commit }, data) {
-    commit('setUser', data)
+    const name = data.name || ''
+    const surname = data.surname || ''
+
+    const processData = {
+      ...data,
+      username: `${name} ${surname}`,
+      sign: `${(name && name[0]) || ''}.${(surname && surname[0]) || ''}.`
+    }
+    commit('setUser', processData)
   },
 
   SET_NETWORK_STATUS ({ commit }, online) {

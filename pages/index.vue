@@ -41,8 +41,8 @@ export default {
           link: '/list'
         },
         {
-          text: 'Настройки',
-          link: '/settings'
+          text: 'Профиль',
+          link: '/profile'
         },
         {
           text: 'О проекте',

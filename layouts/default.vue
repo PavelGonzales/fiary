@@ -20,14 +20,14 @@ import Header from '~/components/Header'
 import AuthModal from '~/components/AuthModal'
 
 const routerNamesMap = Object.freeze({
-  settings: 'Найстройки',
+  profile: 'Профиль',
   list: 'Хроника',
   about: 'О проекте',
   help: 'Помощь'
 })
 
 const allowedRouterNames = Object.freeze([
-  'settings',
+  'profile',
   'list',
   'about',
   'help'
