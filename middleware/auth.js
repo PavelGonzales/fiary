@@ -1,19 +1,21 @@
+import _get from 'lodash/get'
+
 function getCookie (cookiename, cookies) {
   const cookiestring = new RegExp(`${cookiename}[^;]+`).exec(cookies)
   return decodeURIComponent(cookiestring ? cookiestring.toString().replace(/^[^=]+./, '') : '')
 }
 
-export default async function async ({ req, store, redirect, $axios }) {
-  let token = ''
+export default async function async ({ req, store, app: { $axios } }) {
+  let token = _get(store, 'state.auth.token') || ''
+  const isLoggedIn = _get(store, 'state.auth.isLoggedIn') || false
+  const cookie = _get(req, 'headers.cookie') || ''
 
-  if (store.state && store.state.auth && store.state.auth.isLoggedIn) {
+  if (isLoggedIn) {
     return
   }
 
-  if (store.state && store.state.auth && store.state.auth.token) {
-    token = store.state.auth.token
-  } else if (req && req.headers && req.headers.cookie && getCookie('fiary_token', req.headers.cookie)) {
-    token = getCookie('fiary_token', req.headers.cookie)
+  if (!token && cookie && getCookie('fiary_token', cookie)) {
+    token = getCookie('fiary_token', cookie)
   } else {
     console.log('Пустой токен')
   }

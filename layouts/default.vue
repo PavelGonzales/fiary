@@ -40,8 +40,9 @@ export default {
   },
 
   computed: {
-    ...mapState('modal', {
-      open: ({ auth }) => auth.open
+    ...mapState({
+      open: ({ modal }) => modal.auth.open,
+      isLoggedIn: ({ auth }) => auth.isLoggedIn
     }),
     isShowHeader () {
       return allowedRouterNames.includes(this.$route.name)
@@ -54,6 +55,12 @@ export default {
   created () {
     if (this.$route.query.auth === 'open') {
       this.$store.dispatch('modal/auth/TOGGLE', true)
+    }
+  },
+
+  mounted () {
+    if (this.isLoggedIn) {
+      this.$store.dispatch('articles/GET_ARTICLE_LIST')
     }
   }
 }

@@ -119,10 +119,6 @@ export default {
     }
   },
 
-  async fetch ({ store }) {
-    await store.dispatch('articles/GET_ARTICLE_LIST')
-  },
-
   created () {
     this.contentModel = this.content
     this.copyDateFromParams = this.date

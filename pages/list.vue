@@ -1,31 +1,48 @@
 <template>
   <v-layout
-    column
     justify-center
-    align-center
   >
     <v-row justify="center">
       <v-col
-        xs="12"
+        cols="12"
         sm="10"
         md="8"
+        lg="6"
       >
-        <template
-          v-for="article in articles"
-        >
-          <nuxt-link
-            :key="article.date.link"
-            :class="['mb-5', $style.card]"
-            :to="article.date.link"
+        <template v-if="!isLoggedIn">
+          <p :style="{'font-size': '24px'}">
+            К сожалению мы пока не поддерживаем оффлайн режим. Поэтому рекомендуем авторизоваться.
+          </p>
+          <v-btn outlined class="mt-5" @click="openAuthModal">
+            Войти в аккаунт
+          </v-btn>
+        </template>
+        <template v-else-if="!hasArticles">
+          <p :style="{'font-size': '24px'}">
+            У вас еще нет ниодной записи
+          </p>
+          <v-btn outlined class="mt-5" nuxt :to="new Date().toISOString().substr(0, 10)">
+            Написать
+          </v-btn>
+        </template>
+        <template v-if="isLoggedIn">
+          <template
+            v-for="article in articles"
           >
-            <div :class="$style.cardDate">
-              {{ article.date.text }}
-            </div>
-            <div :class="$style.cardContent">
-              {{ article.content }}
-            </div>
-          </nuxt-link>
-          <hr :key="article.date.text" :class="$style.divider">
+            <nuxt-link
+              :key="article.date.link"
+              :class="['mb-5', $style.card]"
+              :to="article.date.link"
+            >
+              <div :class="$style.cardDate">
+                {{ article.date.text }}
+              </div>
+              <div :class="$style.cardContent">
+                {{ article.content }}
+              </div>
+            </nuxt-link>
+            <hr :key="article.date.text" :class="$style.divider">
+          </template>
         </template>
       </v-col>
     </v-row>
@@ -36,16 +53,24 @@
 import { mapState } from 'vuex'
 
 export default {
+  middleware: 'auth',
+
   transition: 'slide-left',
 
   computed: {
     ...mapState({
-      articles: ({ articles }) => articles.shortList
-    })
+      articles: ({ articles }) => articles.shortList,
+      isLoggedIn: ({ auth }) => auth.isLoggedIn
+    }),
+    hasArticles () {
+      return this.articles.length
+    }
   },
 
-  async fetch ({ store }) {
-    await store.dispatch('articles/GET_ARTICLE_LIST')
+  methods: {
+    openAuthModal () {
+      this.$store.dispatch('modal/auth/TOGGLE', true)
+    }
   }
 }
 </script>

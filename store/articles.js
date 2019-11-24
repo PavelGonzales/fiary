@@ -20,7 +20,7 @@ export default {
 
     async GET_ARTICLE_LIST ({ commit }) {
       try {
-        const { data } = await this.$axios.get(`http://localhost:3001/article/list/`)
+        const { data } = await this.$axios.post(`http://localhost:3001/article/list/`)
 
         commit('setShortList', data)
       } catch (err) {

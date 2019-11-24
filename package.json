@@ -13,13 +13,13 @@
     "test": "jest"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/axios": "^5.8.0",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/pwa": "^3.0.0-0",
     "dayjs": "^1.8.17",
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.15",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.10.2"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",

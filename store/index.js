@@ -109,6 +109,10 @@ export const actions = {
       const { data } = await this.$axios.get(`${process.env.API_URL}/auth/me`)
 
       dispatch('SET_USER', data)
+
+      if (!data.error) {
+        dispatch('articles/GET_ARTICLE_LIST')
+      }
       return data
     } catch (err) {
       dispatch('LOGOUT')
