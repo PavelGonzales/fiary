@@ -1,6 +1,7 @@
 <template>
   <v-layout
     justify-center
+    :class="{[$style.dark]: isDarkTheme}"
   >
     <v-row justify="center">
       <v-col
@@ -41,7 +42,7 @@
                 {{ article.content }}
               </div>
             </nuxt-link>
-            <hr :key="article.date.text" :class="$style.divider">
+            <hr :key="article.date.text" class="divider mt-12 mb-4">
           </template>
         </template>
       </v-col>
@@ -60,7 +61,8 @@ export default {
   computed: {
     ...mapState({
       articles: ({ articles }) => articles.shortList,
-      isLoggedIn: ({ auth }) => auth.isLoggedIn
+      isLoggedIn: ({ auth }) => auth.isLoggedIn,
+      isDarkTheme: ({ theme }) => theme.dark
     }),
     hasArticles () {
       return this.articles.length
@@ -77,9 +79,12 @@ export default {
 
 <style module>
 .card {
-  color: initial;
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87)!important;
+}
+
+.dark .card {
+  color: rgba(255, 255, 255, 0.87)!important;
 }
 
 .cardDate {
@@ -94,24 +99,5 @@ export default {
 
 .cardContent {
   font-size: 24px;
-}
-
-.divider {
-  position: relative;
-  height: 1px;
-  border: none;
-  margin-top: 46px;
-  margin-bottom: 16px;
-}
-
-.divider::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 5%;
-  right: 5%;
-  width: 90%;
-  height: 1px;
-  background-image: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.5), transparent);
 }
 </style>

@@ -1,27 +1,30 @@
 
 <template>
-  <div>
+  <div :class="{[$style.dark]: isDarkTheme}">
     <div :class="$style.buttons">
-      <button
-        v-for="button in actions"
-        :key="button.title"
-        :class="[$style.button, {[$style.active]: activeButtons.includes(button.title)}]"
-        @click="handleButton(button.handler)"
-        v-html="button.icon"
-      />
-      <input
-        id="file"
-        type="file"
-        name="file"
-        accept="image/*"
-        :class="$style.fileInput"
-        @change="uploadImage"
-      >
-      <label for="file" :class="$style.button">
-        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
-        </svg>
-      </label>
+      <div :class="$style.buttonsWrap">
+        <button
+          v-for="button in actions"
+          :key="button.title"
+          :class="[$style.button, {[$style.active]: activeButtons.includes(button.title)}]"
+          @click="handleButton(button.handler)"
+          v-html="button.icon"
+        />
+        <input
+          id="file"
+          type="file"
+          name="file"
+          accept="image/*"
+          :class="$style.fileInput"
+          @change="uploadImage"
+        >
+        <label for="file" :class="$style.button">
+          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
+          </svg>
+        </label>
+      </div>
+
       <v-spacer />
       <v-menu
         offset-y
@@ -103,7 +106,8 @@ export default {
   computed: {
     ...mapState({
       user: ({ user }) => user,
-      isLoggedIn: ({ auth }) => auth.isLoggedIn
+      isLoggedIn: ({ auth }) => auth.isLoggedIn,
+      isDarkTheme: ({ theme }) => theme.dark
     }),
     buttonStates () {
       return Object.values(actions).filter(item => item.state)
@@ -176,6 +180,24 @@ export default {
   align-items: center;
 }
 
+.dark .buttons {
+  background-color: #424242;
+}
+
+.buttonsWrap {
+  display: flex;
+}
+
+@media (max-width: 599px) {
+  .buttons {
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    left: 0;
+    margin-bottom: 0;
+  }
+}
+
 .button {
   margin: 4px;
   padding: 4px;
@@ -221,10 +243,14 @@ export default {
   display: block;
   position: absolute;
   font-size: 42px;
-  color: var(--placeholder-gray);;
+  color: var(--placeholder-gray);
   line-height: 1;
   transition: opacity .2s ease-in-out;
   opacity: 0;
+}
+
+.dark .content::before {
+  color: var(--placeholder-gray-dark)
 }
 
 .content:empty::before {

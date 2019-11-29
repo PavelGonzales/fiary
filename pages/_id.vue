@@ -47,6 +47,20 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-dialog v-model="removeDialog" persistent max-width="290">
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template>
+      <v-card>
+        <v-card-title class="headline">Use Google's location service?</v-card-title>
+        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="removeDialog = false">Disagree</v-btn>
+          <v-btn color="green darken-1" text @click="removeDialog = false">Agree</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -75,16 +89,18 @@ export default {
   data () {
     return {
       contentModel: '',
-      copyDateFromParams: undefined
+      copyDateFromParams: undefined,
+      removeDialog: false
     }
   },
 
   computed: {
     ...mapState({
-      articles: ({ articles }) => articles.shortList
+      articles: ({ articles }) => articles.shortList,
+      article: ({ articles }) => articles.current
     }),
     filledDates () {
-      return this.articles.map(item => item.date.link)
+      return this.articles.map(item => _get(item, 'date.link'))
     },
     prev () {
       return _get(this, 'article.date.prev') || {}
@@ -112,11 +128,8 @@ export default {
     }
   },
 
-  async asyncData ({ store, params, $axios }) {
-    const { data } = await $axios.get(`http://localhost:3001/article/${params.id}`)
-    return {
-      article: data
-    }
+  fetch ({ store, params }) {
+    return store.dispatch('articles/GET_ARTICLE', { date: params.id })
   },
 
   created () {
@@ -133,6 +146,13 @@ export default {
       this.$router.push(date)
     },
     saveChanges () {
+      if (this.content === this.contentModel) {
+        return
+      }
+      if (this.contentModel === '') {
+        this.removeDialog = true
+        return
+      }
       if (this.contentModel) {
         const shortContent = ''
 
@@ -163,6 +183,12 @@ export default {
 
 .currentDate {
   font-size: 90px;
+}
+
+@media (max-width: 680px) {
+  .currentDate {
+    font-size: 78px;
+  }
 }
 
 @media (max-width: 599px) {
