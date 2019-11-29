@@ -1,5 +1,6 @@
 <template>
-  <v-app :style="{'background-color': '#fff'}">
+  <v-app>
+    <ThemeSwitch :class="$style.themeSwitcher" />
     <transition name="slide-left">
       <Header v-if="isShowHeader" :title="headerTitle" />
     </transition>
@@ -18,6 +19,7 @@ import { mapState } from 'vuex'
 
 import Header from '~/components/Header'
 import AuthModal from '~/components/AuthModal'
+import ThemeSwitch from '~/components/ThemeSwitcher'
 
 const routerNamesMap = Object.freeze({
   profile: 'Профиль',
@@ -36,7 +38,8 @@ const allowedRouterNames = Object.freeze([
 export default {
   components: {
     Header,
-    AuthModal
+    AuthModal,
+    ThemeSwitch
   },
 
   computed: {
@@ -65,3 +68,12 @@ export default {
   }
 }
 </script>
+
+<style module>
+.themeSwitcher {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  z-index: 1;
+}
+</style>

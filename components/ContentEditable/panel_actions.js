@@ -39,17 +39,9 @@ export default {
     state: () => queryCommandState('italic'),
     handler: () => exec('italic')
   },
-  underline: {
-    icon: `<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M5,21H19V19H5V21M12,17A6,6 0 0,0 18,11V3H15.5V11A3.5,3.5 0 0,1 12,14.5A3.5,3.5 0 0,1 8.5,11V3H6V11A6,6 0 0,0 12,17Z" />
-          </svg>`,
-    title: 'Underline',
-    state: () => queryCommandState('underline'),
-    handler: () => exec('underline')
-  },
   line: {
     icon: `<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-            <path fill="currentCOlor" d="M19,13H5V11H19V13Z" />
+            <path fill="currentColor" d="M19,13H5V11H19V13Z" />
           </svg>`,
     title: 'Horizontal Line',
     handler: () => exec('insertHorizontalRule')

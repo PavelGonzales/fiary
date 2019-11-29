@@ -47,6 +47,22 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-dialog :value="removeDialog" persistent max-width="290">
+      <v-card>
+        <v-card-title>
+          Вы уверены что хотите удалить запись?
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="green darken-1" text @click="answer('decline')">
+            Вернуть запись
+          </v-btn>
+          <v-btn color="green darken-1" text @click="answer('accept')">
+            Уверен
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -72,19 +88,57 @@ export default {
     return +to.params.id < +from.params.id ? 'slide-right' : 'slide-left'
   },
 
+  beforeRouteLeave (to, from, next) {
+    const contentChanged = this.contentModel !== this.content
+    const contentRemoved = this.contentModel === ''
+
+    if (!contentChanged) {
+      next()
+      return
+    }
+
+    if (!contentRemoved) {
+      this.saveOrRemoveArticle()
+      next()
+      return
+    }
+
+    if (contentRemoved && !this.modalAnswer) {
+      this.removeDialog = true
+      this.routerTo = to.fullPath
+      return
+    }
+
+    if (contentRemoved && this.modalAnswer === 'accept') {
+      this.saveOrRemoveArticle()
+      this.removeDialog = false
+      next()
+      return
+    }
+
+    if (contentRemoved && this.modalAnswer === 'decline') {
+      this.removeDialog = false
+      next()
+    }
+  },
+
   data () {
     return {
       contentModel: '',
-      copyDateFromParams: undefined
+      isAgreeRemove: false,
+      routerTo: null,
+      copyDateFromParams: undefined,
+      removeDialog: false
     }
   },
 
   computed: {
     ...mapState({
-      articles: ({ articles }) => articles.shortList
+      articles: ({ articles }) => articles.shortList,
+      article: ({ articles }) => articles.current
     }),
     filledDates () {
-      return this.articles.map(item => item.date.link)
+      return this.articles.map(item => _get(item, 'date.link'))
     },
     prev () {
       return _get(this, 'article.date.prev') || {}
@@ -106,17 +160,8 @@ export default {
     }
   },
 
-  watch: {
-    $route (to, from) {
-      this.saveChanges()
-    }
-  },
-
-  async asyncData ({ store, params, $axios }) {
-    const { data } = await $axios.get(`http://localhost:3001/article/${params.id}`)
-    return {
-      article: data
-    }
+  fetch ({ store, params }) {
+    return store.dispatch('articles/GET_ARTICLE', { date: params.id })
   },
 
   created () {
@@ -124,15 +169,11 @@ export default {
     this.copyDateFromParams = this.date
   },
 
-  beforeDestroy () {
-    this.saveChanges()
-  },
-
   methods: {
     onChangeDate (date) {
       this.$router.push(date)
     },
-    saveChanges () {
+    saveOrRemoveArticle () {
       if (this.contentModel) {
         const shortContent = ''
 
@@ -146,6 +187,11 @@ export default {
           date: this.copyDateFromParams
         })
       }
+    },
+    answer (modalAnswer) {
+      this.removeDialog = false
+      this.modalAnswer = modalAnswer
+      this.$router.push(this.routerTo)
     }
   }
 }
@@ -163,6 +209,12 @@ export default {
 
 .currentDate {
   font-size: 90px;
+}
+
+@media (max-width: 680px) {
+  .currentDate {
+    font-size: 78px;
+  }
 }
 
 @media (max-width: 599px) {

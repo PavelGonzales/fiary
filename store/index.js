@@ -16,6 +16,9 @@ export const state = () => ({
   },
   browser: {
     online: true
+  },
+  theme: {
+    dark: false
   }
 })
 
@@ -46,6 +49,10 @@ export const mutations = {
 
   setNetworkStatus (state, online) {
     state.browser.online = online
+  },
+
+  switchTheme (state, value) {
+    state.theme.dark = value
   }
 }
 
@@ -143,5 +150,12 @@ export const actions = {
 
   SET_NETWORK_STATUS ({ commit }, online) {
     commit('setNetworkStatus', online)
+  },
+
+  SWITCH_THEME ({ commit }, value) {
+    commit('switchTheme', value)
+    console.log(this.app.vuetify.framework.theme.dark)
+    this.app.vuetify.framework.theme.dark = value
+    console.log(this.app.vuetify.framework.theme.dark)
   }
 }

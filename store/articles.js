@@ -1,26 +1,42 @@
 export default {
   state: () => ({
-    shortList: []
+    shortList: [],
+    current: {}
   }),
 
   mutations: {
     setShortList (state, articles) {
       state.shortList = articles
+    },
+
+    setCurrentArticle (state, article) {
+      state.current = article
     }
   },
 
   actions: {
     async CREATE_ARTICLE ({ commit }, { content, shortContent, date }) {
       try {
-        await this.$axios.post(`http://localhost:3001/article/add/`, { content, shortContent, date })
+        await this.$axios.post(`${process.env.API_URL}/article/add/`, { content, shortContent, date })
       } catch (err) {
         console.log('Ошибка articles/CREATE_ARTICLE', err)
       }
     },
 
+    async GET_ARTICLE ({ commit }, { date }) {
+      try {
+        const { data } = await this.$axios.get(`${process.env.API_URL}/article/${date}`)
+
+        commit('setCurrentArticle', data)
+        return data
+      } catch (err) {
+        console.log('Ошибка articles/GET_ARTICLE', err)
+      }
+    },
+
     async GET_ARTICLE_LIST ({ commit }) {
       try {
-        const { data } = await this.$axios.post(`http://localhost:3001/article/list/`)
+        const { data } = await this.$axios.post(`${process.env.API_URL}/article/list/`)
 
         commit('setShortList', data)
       } catch (err) {
@@ -30,7 +46,7 @@ export default {
 
     async FILE_UPLOAD ({ commit }, file) {
       try {
-        const { data } = await this.$axios.post(`http://localhost:3001/article/fileUpload/`, file, {
+        const { data } = await this.$axios.post(`${process.env.API_URL}/article/fileUpload/`, file, {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
         return data
@@ -41,7 +57,7 @@ export default {
 
     async REMOVE_ARTICLE ({ commit }, { date }) {
       try {
-        await this.$axios.post(`http://localhost:3001/article/remove/`, { date })
+        await this.$axios.post(`${process.env.API_URL}/article/remove/`, { date })
       } catch (err) {
         console.log('Ошибка articles/REMOVE_ARTICLE', err)
       }

@@ -1,6 +1,7 @@
 <template>
   <v-layout
     justify-center
+    :class="{[$style.dark]: isDarkTheme}"
   >
     <v-row justify="center" :style="{'font-size': '24px'}">
       <v-col
@@ -8,45 +9,48 @@
         sm="10"
         md="8"
         lg="6"
+        :style="{position: 'relative'}"
       >
-        <template v-if="isLoggedIn">
-          <v-row align="center" justify="center" justify-sm="start">
-            <v-avatar
-              size="200"
-              class="ml-3 mr-2"
-            >
-              <img
-                v-if="user.avatar"
-                :src="user.avatar"
-                :alt="`${user.name} ${user.surname}`"
+        <transition name="slide-left">
+          <template v-if="isLoggedIn">
+            <v-row align="center" justify="center" justify-sm="start" :style="{position: 'absolute'}">
+              <v-avatar
+                size="200"
+                class="ml-3 mr-2"
               >
-              <span v-else-if="user.sign" :class="$style.userSign">{{ userSign }}</span>
-              <v-icon v-else :class="$style.iconAvatar">
-                mdi-account-circle
-              </v-icon>
-            </v-avatar>
-            <v-col cols="12" sm="auto" :class="['text-center', 'text-sm-left', $style.userInfo]">
-              <div>{{ user.username }}</div>
-              <v-btn outlined class="mt-5" @click="logout">
-                Выйти из аккаунта
+                <img
+                  v-if="user.avatar"
+                  :src="user.avatar"
+                  :alt="`${user.name} ${user.surname}`"
+                >
+                <span v-else-if="user.sign" :class="$style.userSign">{{ userSign }}</span>
+                <v-icon v-else :class="$style.iconAvatar">
+                  mdi-account-circle
+                </v-icon>
+              </v-avatar>
+              <v-col cols="12" sm="auto" :class="['text-center', 'text-sm-left', $style.userInfo]">
+                <div>{{ user.username }}</div>
+                <v-btn outlined class="mt-5" @click="logout">
+                  Выйти из аккаунта
+                </v-btn>
+              </v-col>
+            </v-row>
+          </template>
+        </transition>
+        <transition name="slide-left">
+          <template v-if="!isLoggedIn">
+            <div :style="{position: 'absolute'}">
+              <p>
+                Вы не авторизовались.<br>
+                Весь ваш прогрес будет сохраняться локально.<br>
+                Если вы хотите иметь доступ к записям с любого устройства, пожалуйста авторизируйтесь.
+              </p>
+              <v-btn outlined class="mt-5" @click="openAuthModal">
+                Войти в аккаунт
               </v-btn>
-            </v-col>
-          </v-row>
-        </template>
-        <template v-else>
-          <div>
-            Вы не авторизовались.
-          </div>
-          <div>
-            Весь ваш прогрес будет сохраняться локально.
-          </div>
-          <div>
-            Если вы хотите иметь доступ к записям с любого устройства, пожалуйста авторизируйтесь.
-          </div>
-          <v-btn outlined class="mt-5" @click="openAuthModal">
-            Войти в аккаунт
-          </v-btn>
-        </template>
+            </div>
+          </template>
+        </transition>
       </v-col>
     </v-row>
   </v-layout>
@@ -64,7 +68,8 @@ export default {
   computed: {
     ...mapState({
       user: ({ user }) => user,
-      isLoggedIn: ({ auth }) => auth.isLoggedIn
+      isLoggedIn: ({ auth }) => auth.isLoggedIn,
+      isDarkTheme: ({ theme }) => theme.dark
     }),
 
     userSign () {
@@ -102,5 +107,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.dark .userSign {
+  background-color: #424242;
 }
 </style>
