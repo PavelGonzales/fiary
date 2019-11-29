@@ -47,17 +47,19 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-dialog v-model="removeDialog" persistent max-width="290">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-      </template>
+    <v-dialog :value="removeDialog" persistent max-width="290">
       <v-card>
-        <v-card-title class="headline">Use Google's location service?</v-card-title>
-        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+        <v-card-title>
+          Вы уверены что хотите удалить запись?
+        </v-card-title>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="removeDialog = false">Disagree</v-btn>
-          <v-btn color="green darken-1" text @click="removeDialog = false">Agree</v-btn>
+          <v-spacer />
+          <v-btn color="green darken-1" text @click="answer('decline')">
+            Вернуть запись
+          </v-btn>
+          <v-btn color="green darken-1" text @click="answer('accept')">
+            Уверен
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -86,9 +88,45 @@ export default {
     return +to.params.id < +from.params.id ? 'slide-right' : 'slide-left'
   },
 
+  beforeRouteLeave (to, from, next) {
+    const contentChanged = this.contentModel !== this.content
+    const contentRemoved = this.contentModel === ''
+
+    if (!contentChanged) {
+      next()
+      return
+    }
+
+    if (!contentRemoved) {
+      this.saveOrRemoveArticle()
+      next()
+      return
+    }
+
+    if (contentRemoved && !this.modalAnswer) {
+      this.removeDialog = true
+      this.routerTo = to.fullPath
+      return
+    }
+
+    if (contentRemoved && this.modalAnswer === 'accept') {
+      this.saveOrRemoveArticle()
+      this.removeDialog = false
+      next()
+      return
+    }
+
+    if (contentRemoved && this.modalAnswer === 'decline') {
+      this.removeDialog = false
+      next()
+    }
+  },
+
   data () {
     return {
       contentModel: '',
+      isAgreeRemove: false,
+      routerTo: null,
       copyDateFromParams: undefined,
       removeDialog: false
     }
@@ -122,12 +160,6 @@ export default {
     }
   },
 
-  watch: {
-    $route (to, from) {
-      this.saveChanges()
-    }
-  },
-
   fetch ({ store, params }) {
     return store.dispatch('articles/GET_ARTICLE', { date: params.id })
   },
@@ -137,22 +169,11 @@ export default {
     this.copyDateFromParams = this.date
   },
 
-  beforeDestroy () {
-    this.saveChanges()
-  },
-
   methods: {
     onChangeDate (date) {
       this.$router.push(date)
     },
-    saveChanges () {
-      if (this.content === this.contentModel) {
-        return
-      }
-      if (this.contentModel === '') {
-        this.removeDialog = true
-        return
-      }
+    saveOrRemoveArticle () {
       if (this.contentModel) {
         const shortContent = ''
 
@@ -166,6 +187,11 @@ export default {
           date: this.copyDateFromParams
         })
       }
+    },
+    answer (modalAnswer) {
+      this.removeDialog = false
+      this.modalAnswer = modalAnswer
+      this.$router.push(this.routerTo)
     }
   }
 }

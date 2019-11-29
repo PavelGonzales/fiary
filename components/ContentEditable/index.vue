@@ -136,15 +136,18 @@ export default {
         .filter(item => item.state())
         .map(item => item.title)
     },
-    handleInput ({ target: { firstChild } }) {
-      let contentInnerHTML = this.$refs.content.innerHTML
+    handleInput ({ target }) {
+      const { textContent } = this.$refs.content
+      const { firstChild } = target
+      let { innerHTML } = target
 
       if (firstChild && firstChild.nodeType === 3) {
         exec('formatBlock', '<p>')
-      } else if (contentInnerHTML === '<p><br></p>') {
-        contentInnerHTML = '<p></p>'
+      } else if (!textContent) {
+        innerHTML = ''
       }
-      this.$emit('input', contentInnerHTML)
+
+      this.$emit('input', innerHTML)
     },
     handleButton (handler) {
       handler()
