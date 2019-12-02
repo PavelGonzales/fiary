@@ -1,5 +1,5 @@
 <template>
-  <label for="theme" :class="$style.label">
+  <label for="theme" :class="[$style.label, {[$style.dark]: isDarkTheme}]">
     <input
       id="theme"
       type="checkbox"
@@ -8,7 +8,7 @@
       :class="$style.input"
       @change="change"
     >
-    <v-icon>mdi-weather-night</v-icon>
+    <v-icon :class="$style.icon">mdi-weather-night</v-icon>
   </label>
 </template>
 
@@ -33,6 +33,20 @@ export default {
 .label {
   cursor: pointer;
   padding: 4px;
+  background-color: #303030;
+  border-radius: 0 0 50% 50%;
+}
+
+.label.dark {
+  background-color: #fafafa;
+}
+
+.icon {
+  color: #fafafa!important;
+}
+
+.dark .icon {
+  color: #303030!important;
 }
 
 .input {

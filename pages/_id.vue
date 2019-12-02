@@ -1,5 +1,9 @@
 <template>
   <v-layout
+    v-touch="{
+      left: () => $router.push(next.link),
+      right: () => $router.push(prev.link)
+    }"
     column
     justify-center
     align-center
@@ -85,7 +89,7 @@ export default {
     if (!from) {
       return 'slide-left'
     }
-    return +to.params.id < +from.params.id ? 'slide-right' : 'slide-left'
+    return to.params.id < from.params.id ? 'slide-right' : 'slide-left'
   },
 
   beforeRouteLeave (to, from, next) {

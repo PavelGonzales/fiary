@@ -19,7 +19,7 @@
           @change="uploadImage"
         >
         <label for="file" :class="$style.button">
-          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+          <svg viewBox="0 0 24 24">
             <path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z" />
           </svg>
         </label>
@@ -29,7 +29,7 @@
       <v-menu
         offset-y
         left
-        origin="top right"
+        :origin="$vuetify.breakpoint.xsOnly ? 'bottom right' : 'top right'"
         transition="scale-transition"
       >
         <template v-slot:activator="{ on }">
@@ -191,16 +191,6 @@ export default {
   display: flex;
 }
 
-@media (max-width: 599px) {
-  .buttons {
-    position: fixed;
-    bottom: 0;
-    top: auto;
-    left: 0;
-    margin-bottom: 0;
-  }
-}
-
 .button {
   margin: 4px;
   padding: 4px;
@@ -211,8 +201,26 @@ export default {
   cursor: pointer;
 }
 
-.button:hover {
-  transform: scale(1.1);
+@media (max-width: 599px) {
+  .buttons {
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    left: 0;
+    margin-bottom: 0;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .button {
+    height: 36px;
+    width: 36px;
+  }
+}
+
+@media (hover: none) {
+  .button:hover {
+    transform: scale(1.1);
+  }
 }
 
 .button.active {
@@ -236,9 +244,8 @@ export default {
 .content {
   min-height: 200px;
   outline: none;
-  border-radius: 10px;
-  transition: box-shadow .2s ease-in-out;
   font-size: 26px;
+  padding-bottom: 25px;
 }
 
 .content::before {
@@ -264,13 +271,7 @@ export default {
   max-width: 100%;
 }
 
-.content h1 {
-  line-height: 1.1;
-}
-
 @media (max-width: 599px) {
-  .content h1 {
-    font-size: 36px;
-  }
+
 }
 </style>

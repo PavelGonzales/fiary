@@ -26,25 +26,15 @@
             Написать
           </v-btn>
         </template>
-        <template v-if="isLoggedIn">
-          <template
-            v-for="article in articles"
-          >
-            <nuxt-link
-              :key="article.date.link"
-              :class="['mb-5', $style.card]"
-              :to="article.date.link"
-            >
-              <div :class="$style.cardDate">
-                {{ article.date.text }}
-              </div>
-              <div :class="$style.cardContent">
-                {{ article.content }}
-              </div>
-            </nuxt-link>
-            <hr :key="article.date.text" class="divider mt-12 mb-4">
-          </template>
-        </template>
+        <v-date-picker
+          v-if="isLoggedIn"
+          v-model="dateModel"
+          no-title
+          full-width
+          :events="filledDates"
+          event-color="green lighten-1"
+          @change="onChangeDate"
+        />
       </v-col>
     </v-row>
   </v-layout>
@@ -52,11 +42,18 @@
 
 <script>
 import { mapState } from 'vuex'
+import _get from 'lodash/get'
 
 export default {
   middleware: 'auth',
 
   transition: 'slide-left',
+
+  data () {
+    return {
+      dateModel: ''
+    }
+  },
 
   computed: {
     ...mapState({
@@ -64,6 +61,9 @@ export default {
       isLoggedIn: ({ auth }) => auth.isLoggedIn,
       isDarkTheme: ({ theme }) => theme.dark
     }),
+    filledDates () {
+      return this.articles.map(item => _get(item, 'date.link'))
+    },
     hasArticles () {
       return this.articles.length
     }
@@ -72,6 +72,10 @@ export default {
   methods: {
     openAuthModal () {
       this.$store.dispatch('modal/auth/TOGGLE', true)
+    },
+
+    onChangeDate (date) {
+      this.$router.push(date)
     }
   }
 }

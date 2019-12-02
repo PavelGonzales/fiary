@@ -2,11 +2,11 @@
   <v-row
     justify="center"
     align="center"
-    class="flex-grow-0"
   >
     <v-col
       sm="5"
       lg="4"
+      cols="12"
     >
       <div :class="$style.title">
         Fiary

@@ -72,8 +72,9 @@ export default {
 <style module>
 .themeSwitcher {
   position: fixed;
-  top: 10px;
-  right: 15px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
 }
 </style>
