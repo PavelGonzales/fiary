@@ -89,6 +89,12 @@
               :type="showRegistrationRepeatPassword ? 'text' : 'password'"
               @click:append="showRegistrationRepeatPassword = !showRegistrationRepeatPassword"
             />
+            <v-checkbox
+              v-model="registrationModel.agree"
+              label="Я согласен с политикой обработки персональных данных"
+              class="mt-0"
+            />
+
             <v-btn
               outlined
               block
@@ -137,7 +143,8 @@ export default {
         surname: '',
         email: '',
         password: '',
-        repeatPassword: ''
+        repeatPassword: '',
+        agree: false
       },
       rules: {
         required: value => !!value || 'Обязательное поле.',

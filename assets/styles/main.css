@@ -75,3 +75,7 @@
 .theme--dark.v-application .divider::before {
   background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
 }
+
+.text--underline {
+  text-decoration: underline!important;
+}

@@ -10,14 +10,8 @@
         md="8"
         lg="6"
       >
-        <template v-if="!isLoggedIn">
-          <p :style="{'font-size': '24px'}">
-            К сожалению мы пока не поддерживаем оффлайн режим. Поэтому рекомендуем авторизоваться.
-          </p>
-          <v-btn outlined class="mt-5" @click="openAuthModal">
-            Войти в аккаунт
-          </v-btn>
-        </template>
+        <UnauthNotice v-if="!isLoggedIn" />
+
         <template v-else-if="!hasArticles">
           <p :style="{'font-size': '24px'}">
             У вас еще нет ниодной записи
@@ -43,11 +37,16 @@
 <script>
 import { mapState } from 'vuex'
 import _get from 'lodash/get'
+import UnauthNotice from '~/components/UnauthNotice'
 
 export default {
   middleware: 'auth',
 
   transition: 'slide-left',
+
+  components: {
+    UnauthNotice
+  },
 
   data () {
     return {
@@ -70,10 +69,6 @@ export default {
   },
 
   methods: {
-    openAuthModal () {
-      this.$store.dispatch('modal/auth/TOGGLE', true)
-    },
-
     onChangeDate (date) {
       this.$router.push(date)
     }

@@ -21,11 +21,23 @@
       >
         {{ item.text }}
       </v-btn>
+      <v-btn
+        text
+        block
+        x-small
+        nuxt
+        to="policy"
+        class="mt-8 blue--text text--darken-3 text--underline"
+      >
+        Политика обработки персональных данных
+      </v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   transition: 'slide-left',
 
@@ -54,6 +66,13 @@ export default {
         }
       ]
     }
+  },
+
+  computed: {
+    ...mapState({
+      user: ({ user }) => user,
+      isLoggedIn: ({ auth }) => auth.isLoggedIn
+    })
   }
 }
 </script>
