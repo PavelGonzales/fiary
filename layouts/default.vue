@@ -25,14 +25,16 @@ const routerNamesMap = Object.freeze({
   profile: 'Профиль',
   list: 'Хроника',
   about: 'О проекте',
-  help: 'Помощь'
+  help: 'Помощь',
+  policy: 'Политика'
 })
 
 const allowedRouterNames = Object.freeze([
   'profile',
   'list',
   'about',
-  'help'
+  'help',
+  'policy'
 ])
 
 export default {

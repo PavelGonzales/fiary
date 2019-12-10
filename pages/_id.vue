@@ -9,47 +9,52 @@
     align-center
   >
     <v-row justify="center" :style="{width: '100%'}">
-      <v-col
-        sm="1"
-        md="2"
-        align-self="center"
-        class="pa-0 sticky-col d-none d-sm-flex"
-      >
-        <v-btn v-if="prev.text" rounded text nuxt :to="prev.link">
-          <v-icon class="d-md-none">
-            mdi-chevron-left
-          </v-icon>
-          <span class="d-none d-md-inline-block text-lowercase">{{ prev.text }}</span>
-        </v-btn>
+      <v-col v-if="!isLoggedIn">
+        <UnauthNotice />
       </v-col>
-      <v-col
-        sm="10"
-        md="8"
-        lg="6"
-      >
-        <HeadingDatePicker
-          :date="date"
-          :filled-dates="filledDates"
-          class="currentDate"
-          @changeDate="onChangeDate"
-        />
-        <ContentEditable
-          v-model="contentModel"
-        />
-      </v-col>
-      <v-col
-        sm="1"
-        md="2"
-        align-self="center"
-        class="pa-0 sticky-col d-none d-sm-flex"
-      >
-        <v-btn v-if="next.text" rounded text nuxt :to="next.link">
-          <v-icon class="d-md-none">
-            mdi-chevron-right
-          </v-icon>
-          <span class="d-none d-md-inline-block text-lowercase">{{ next.text }}</span>
-        </v-btn>
-      </v-col>
+      <template v-else>
+        <v-col
+          sm="1"
+          md="2"
+          align-self="center"
+          class="pa-0 sticky-col d-none d-sm-flex"
+        >
+          <v-btn v-if="prev.text" rounded text nuxt :to="prev.link">
+            <v-icon class="d-md-none">
+              mdi-chevron-left
+            </v-icon>
+            <span class="d-none d-md-inline-block text-lowercase">{{ prev.text }}</span>
+          </v-btn>
+        </v-col>
+        <v-col
+          sm="10"
+          md="8"
+          lg="6"
+        >
+          <HeadingDatePicker
+            :date="date"
+            :filled-dates="filledDates"
+            class="currentDate"
+            @changeDate="onChangeDate"
+          />
+          <ContentEditable
+            v-model="contentModel"
+          />
+        </v-col>
+        <v-col
+          sm="1"
+          md="2"
+          align-self="center"
+          class="pa-0 sticky-col d-none d-sm-flex"
+        >
+          <v-btn v-if="next.text" rounded text nuxt :to="next.link">
+            <v-icon class="d-md-none">
+              mdi-chevron-right
+            </v-icon>
+            <span class="d-none d-md-inline-block text-lowercase">{{ next.text }}</span>
+          </v-btn>
+        </v-col>
+      </template>
     </v-row>
     <v-dialog :value="removeDialog" persistent max-width="290">
       <v-card>
@@ -76,13 +81,15 @@ import dayjs from 'dayjs'
 import { mapState } from 'vuex'
 import ContentEditable from '~/components/ContentEditable'
 import HeadingDatePicker from '~/components/HeadingDatePicker'
+import UnauthNotice from '~/components/UnauthNotice'
 
 export default {
   middleware: 'auth',
 
   components: {
     ContentEditable,
-    HeadingDatePicker
+    HeadingDatePicker,
+    UnauthNotice
   },
 
   transition (to, from) {
@@ -139,7 +146,8 @@ export default {
   computed: {
     ...mapState({
       articles: ({ articles }) => articles.shortList,
-      article: ({ articles }) => articles.current
+      article: ({ articles }) => articles.current,
+      isLoggedIn: ({ auth }) => auth.isLoggedIn
     }),
     filledDates () {
       return this.articles.map(item => _get(item, 'date.link'))

@@ -25,8 +25,6 @@
             <template v-slot:activator="{ on }">
               <v-avatar
                 size="40"
-                tile
-                :class="[$style.avatar]"
                 class="mr-2"
                 v-on="on"
               >
@@ -105,10 +103,6 @@ export default {
 }
 </script>
 <style module>
-.avatar {
-  border-radius: 10px;
-}
-
 .title {
   font-size: 36px;
 }

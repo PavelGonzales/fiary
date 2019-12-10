@@ -21,7 +21,7 @@
                 <img
                   v-if="user.avatar"
                   :src="user.avatar"
-                  :alt="`${user.name} ${user.surname}`"
+                  :alt="user.username"
                 >
                 <span v-else-if="user.sign" :class="$style.userSign">{{ userSign }}</span>
                 <v-icon v-else :class="$style.iconAvatar">
@@ -32,6 +32,27 @@
                 <div>{{ user.username }}</div>
                 <v-btn outlined class="mt-5" @click="logout">
                   Выйти из аккаунта
+                </v-btn>
+              </v-col>
+              <v-col
+                cols="12"
+              >
+                Вам доступен чат бот Telegram<br>
+                <v-text-field
+                  :value="user.botKey"
+                  append-icon="mdi-content-copy"
+                  label="Ваш ключ к боту"
+                  class="mt-5"
+                  outlined
+                  readonly
+                  @click:append="copyText(`key:${user.botKey}`)"
+                />
+                <v-btn
+                  outlined
+                  href="tg://resolve?domain=daily_fiary_bot"
+                  target="_blank"
+                >
+                  Открыть бота
                 </v-btn>
               </v-col>
             </v-row>
@@ -88,6 +109,14 @@ export default {
 
     logout () {
       this.$store.dispatch('LOGOUT')
+    },
+
+    async copyText (text) {
+      try {
+        await this.$copyText(text)
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 }

@@ -61,9 +61,15 @@ export const getters = {
 }
 
 export const actions = {
-  async REGISTRATION ({ dispatch }, { username, email, password }) {
+  async REGISTRATION ({ dispatch }, { name, surname, email, password }) {
     try {
-      const { data } = await this.$axios.post(`${process.env.API_URL}/auth/registration`, { username, email: email.toLowerCase(), password })
+      const { data } = await this.$axios.post(`${process.env.API_URL}/auth/registration`, {
+        name,
+        surname,
+        username: `${name} ${surname}`.trim(),
+        email: email.toLowerCase(),
+        password
+      })
 
       dispatch('LOGIN', { email, password })
 
